@@ -1,0 +1,72 @@
+<html>
+<head>
+</head>
+<!-- Firebase DHT11 push_float() example  -->
+<body>
+  <div class="div">
+  <h2> Firebase LED Object data
+  </div>
+  <div class="LED">
+  <h2 id = "OUT_TEXT"> </h2>
+</div> 
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDj0TuoJ_AVqzbONbtROmMQ1mPixzdq-S8",
+    authDomain: "fir-led-control-dac59.firebaseapp.com",
+    databaseURL: "https://fir-led-control-dac59.firebaseio.com",
+    projectId: "fir-led-control-dac59",
+    storageBucket: "fir-led-control-dac59.appspot.com",
+    messagingSenderId: "553645605790",
+    appId: "1:553645605790:web:bac05e2bbefc7ee9b84c8f",
+    measurementId: "G-0HPVYKNYPR"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+<script>
+</script>
+<form>
+<input type = 'button' onclick="onFunction();"  value = 'ON' class="button">
+<input type = 'button' onclick="offFunction();" value = 'OFF' class="button">
+</form>
+<script>
+var objRef = firebase.database().ref().child('LED_STATUS');
+objRef.on("child_added", function(snapshot) { 
+//child 오브젝트 단위로 스넵샷을 받아가지고
+console.log(snapshot.val());
+// .val해서 출력
+var newled = snapshot.val();
+LED_STATUS.innerText = "LED is " + newled;
+console.log(newled);
+})
+var dbRef = firebase.database().ref().child('LED_STATUS'); 
+//key  value가 on이냐 off냐
+
+function onFunction() {
+// ON 버턴 클릭하여 DB 값 true 설정
+dbRef.set('ON')
+// OFF 버튼 클릭하여 DB 값 false 설정
+function offFunction() {
+dbRef.set('OFF')
+}
+// 현재 상태의 database 값 읽어오기
+dbRef.on("value", function(snapshot) {
+if (snapshot.val() == 'ON') {
+OUT_TEXT.innerText = 'LED is ON'; 
+//온이라는 text에 출력하고
+} else if (snapshot.val() == 'OFF') {
+OUT_TEXT.innerText = 'LED is OFF'; 
+//오프라는 txt에 출력
+}
+}, function (error) {
+console.log("Error: " + error.code);
+});
+</script>
+</body>
+</html>

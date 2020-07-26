@@ -1,0 +1,39 @@
+<html>
+<head>
+<link rel="stylesheet" href="arduino.css">
+</head>
+<body>
+     <h4 id="bread">빵 </h4>
+     <h2 id="cheese">치즈</h2>
+     <h4 id="temp"> </h4>
+     <h4 id="salad">양상추</h4>
+     <h4 id="humi"> </h4>
+     <h4 id="bread">빵</h4>
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-database.js"></script>
+<script>
+  var firebaseConfig = {
+    	apiKey: "AIzaSyDAEe0Xr_h8ByMvMYsAdbS9Xh7t4Mysyto",
+    	authDomain: "push-float-2020-2-2.firebaseapp.com",
+    	databaseURL: "https://push-float-2020-2-2.firebaseio.com",
+    	projectId: "push-float-2020-2-2",
+    	storageBucket: "push-float-2020-2-2.appspot.com",
+    	messagingSenderId: "817573388955",
+   	 appId: "1:817573388955:web:79eda181936153becb5c3e",
+    	measurementId: "G-6T36NT4EDK"
+  };	 // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+      <script>
+          var objRef = firebase.database().ref().child('logDHT/');
+          objRef.on("child_added", function(snapshot) {
+	var newHumi = snapshot.val().humidity;
+	var newTemp = snapshot.val().temperature;
+	humi.innerText = "Humidity : " + newHumi + "%";
+	temp.innerText = "Temperature : " + newTemp + "℃";
+          })
+      </script>
+</body>
+</html>
